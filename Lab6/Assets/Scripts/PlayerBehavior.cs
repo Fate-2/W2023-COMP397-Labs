@@ -5,6 +5,13 @@ using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviour
 {
+
+    [Header("Player Data")]
+    public string playerName;
+    public int playerHealth;
+    public int playLevel;
+
+    [Header("Character Controller")]
     public CharacterController controller;
 
     [Header("Movement")]
@@ -18,6 +25,11 @@ public class PlayerBehavior : MonoBehaviour
     public float groundRadius = 0.5f;
     public LayerMask groundMask;
     public bool isGrounded;
+    public Vector3 startPosition;
+    private void Awake()
+    {
+        startPosition = transform.position;
+    }
 
     // Start is called before the first frame update
     private void Start()
@@ -54,5 +66,28 @@ public class PlayerBehavior : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("DeathArea"))
+        {
+            GetComponent<CharacterController>().enabled = false;
+            transform.position = startPosition;
+            GetComponent<CharacterController>().enabled = true;
+        }
+    }
+    public void SaveButton_Pressed()
+    {
+        SaveSystem.SavePlayer(this.GetComponent<PlayerBehavior>());
+    }
+    public void LoadButton_Pressed()
+    {
+        PlayerData data = SaveSystem.LoadPlayer();
+        if (data != null)
+        {
+            playerName = data.name;
+            playerHealth = data.health;
+            playLevel = data.level;
+        }
     }
 }
