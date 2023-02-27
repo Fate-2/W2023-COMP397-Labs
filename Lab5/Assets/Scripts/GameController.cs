@@ -8,8 +8,7 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private List<NavMeshSurface> _maze;
     [SerializeField] private List<GameObject> _robots;
-    [SerializeField] private Transform _respawnTransform;
-    [SerializeField] private Transform _playerTransform;
+    
 
     private  void Start()
     {
@@ -21,11 +20,6 @@ public class GameController : MonoBehaviour
         {
             robot.SetActive(true);
         }
-    }
-
-    public void RespawnPlayer()
-    {
-        _playerTransform.position = _respawnTransform.position;
     }
 
 }
